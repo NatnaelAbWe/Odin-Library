@@ -1,0 +1,80 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+h1{
+    background-color: blue;
+    width: 100%;
+    color: #ffff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+button{
+    border: none;
+    background-color: blue;
+    color: #ffff;
+    font-size: 1.57rem;
+    margin:20px auto;
+    padding: 10px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 10px 10px #000;
+
+}
+
+form{
+    border: 1px solid #434040;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    padding: 20px 10px;
+    align-items: center;
+    margin: 0 auto;
+    border-radius: 10px;
+    box-shadow: 0 10px 10px #000;
+}
+
+.input{
+    width: 300px;
+    height: 40px;
+    border: none;
+    outline: none;
+    background-color: rgb(201, 220, 220);
+    border-radius: 10px;
+    padding: 0 20px;
+    margin: 10px;
+}
+
+.horizontal-line{
+    border: 2px solid red;
+    width: 100%;
+}
+
+.tick-box{
+    display: flex;
+    align-items: center;
+}
+
+#tick-box{
+    margin-left: 5px;
+    background-color: #b53b3b;
+}
+
+.book-list{
+    width: 100%;
+    margin: 20px;
+    display: table;
+}
+
+.book-list table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.book-list table tr{
+    text-align: left;
+    border-bottom: 1px solid #634f4f;
+}
