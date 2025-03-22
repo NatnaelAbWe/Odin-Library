@@ -1,67 +1,79 @@
-const bookTitle = document.querySelector('[name = "title"]');
-const Author = document.querySelector('[name = "author"]');
-const page = document.querySelector('[name = "page"]');
-const readStatus = document.querySelector('select');
-const addBtn = document.querySelector('.add-btn');
-const form = document.querySelector('form');
-const tableBody = document.querySelector('.table-body')
+let myLibrary = []
 
-let myLibrary = JSON.parse(localStorage.getItem('books')) || [];
+function render(){
+    let libraryEl = document.querySelector('#library')
+    libraryEl.innerHTML = ''
+    for (let i = 0; i < myLibrary.length; i++){
+        let book = myLibrary[i]
 
-class Book{
-    constructor(title, author, status){
-        this.title = title;
-        this.author = author;
-        this.read = status;
-    };
-};
+       let bookEl = document.createElement('div')
+       bookEl.setAttribute('class', 'book-card')
+       bookEl.innerHTML = `
+       <div class="card-header">
+        <h3 class="title">${book.title}</h3>
+        <h5 class="author">by ${book.author}</h5>
+      </div>
+      <div class="card-body">
+        <p>${book.pages} pages</p>
+        <p class="read-status">${book.read ? "Read" : "Not Read Yet"}</p>
+        <button class="remove-btn" onclick="removeBook(${i})">Remove</button>
+        <button class="toggle-read-btn" onclick="toggleRead(${i})">Toggle Read</button>
+        `
+       libraryEl.appendChild(bookEl)
+    }
+    
+   
+    }
 
-function removeItem(id) {
-	const itemToDelete = document.getElementById(`${id}`)
-	myLibrary.splice(itemToDelete.id, 1)
-	handleStorageAndDisplay()
-}
-function handleStorageAndDisplay() {
-	localStorage.setItem('books', JSON.stringify(myLibrary))
-	populateLibrary(myLibrary, itemsList)
-}
-function toggleStatus(e) {
-	if (e.target.classList.contains('read-status')) {
-		const index = e.target.parentNode.id
-		if (myLibrary[index].read === 'read') {
-			myLibrary[index].read = 'not read'
-		} else {
-			myLibrary[index].read = 'read'
-		}
-		handleStorageAndDisplay()
-	}
-}
-function addBookToLibrary(e) {
-	e.preventDefault()
-	if (bookTitle.value === '' || bookAuthor.value === '' || readStatus.value === '') {
-		alert(`Please fill the form.`)
-		return
-	} else {
-		const newItem = new Book(bookTitle.value, bookAuthor.value, readStatus.value)
-		myLibrary.push(newItem)
-		handleStorageAndDisplay()
-		form.reset()
-	}
-}
-function populateLibrary(myLibrary, itemsList) {
-	itemsList.innerHTML = myLibrary
-		.map((book, id) => {
-			return `<tr class="table-item" id="${id}">
-			<td>${book.title}</td>
-			<td>${book.author}</td>
-			<td class="read-status">${book.read}</td>
-			<td><button class="table-item-button" id="${id}" onclick="removeItem(${id})">delete</button>
-			</tr>`
-		})
-		.join('')
+
+function Book(title, author , pages, read){
+    
+    this.title = title;
+    this.author = author;
+    this.pages = pages; 
+    this.read = read;
 }
 
-populateLibrary(myLibrary, tableBody)
+function removeBook(index){
+    myLibrary.splice(index, 1)
+    render()
+}
 
-form.addEventListener('submit', addBookToLibrary)
-tableBody.addEventListener('click', toggleStatus)
+Book.prototype.toggleRead = function(){
+    this.read = !this.read
+}
+
+function toggleRead(index){
+    myLibrary[index].toggleRead()
+    render()
+}
+
+function addBookToLibrary(){
+    let title = document.querySelector('#title').value;
+    let author = document.querySelector('#author').value;
+    let pages = document.querySelector('#pages').value;
+    let read = document.querySelector('#read').value;
+    let newBook = new Book(title, author, pages,read);
+    myLibrary.push(newBook);
+    render();
+}
+
+let newBookBtn = document.querySelector('#new-book-btn')
+
+
+newBookBtn.addEventListener('click',() => {
+    let showForm = document.querySelector('#new-book-form')
+    showForm.style.display = 'flex';
+})
+
+document.querySelector('#new-book-form').addEventListener('submit', (event) => {
+    event.preventDefault()
+    addBookToLibrary()
+    let showForm = document.querySelector('#new-book-form')
+    showForm.style.display = 'none';
+})
+
+
+
+console.log(myLibrary)
+
